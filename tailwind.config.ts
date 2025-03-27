@@ -7,6 +7,7 @@ const config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "*.{js,ts,jsx,tsx,mdx}",
   ],
   prefix: "",
   theme: {
@@ -52,6 +53,29 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        retro: {
+          background: "#f8f9fa",
+          primary: "#1B2A41",
+          secondary: "#3F5E80",
+          accent: "#8EA8C3",
+          highlight: "#A67DB8",
+          soft: "#CEB1BE",
+          orange: "#FF5733",
+          text: "#2f2f2f",
+        },
+        dark: {
+          background: "#1f2937", // Darker shade of the light background
+          primary: "#2B3A51", // Slightly lighter than light primary
+          secondary: "#4F6E90", // Slightly lighter than light secondary
+          accent: "#7E98B3", // Slightly darker than light accent
+          highlight: "#967DA8", // Slightly darker than light highlight
+          soft: "#BEA1AE", // Slightly darker than light soft
+          orange: "#FF6843", // Slightly lighter orange for better visibility
+          text: "#e5e7eb", // Light gray for better readability on dark background
+        },
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
