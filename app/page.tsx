@@ -24,7 +24,7 @@ export default function Home() {
             </p>
             <div className="flex justify-center gap-4">
               <Link
-                href="/signup"
+                href="/sign-up"
                 className="bg-retro-primary hover:bg-retro-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary text-white px-8 py-3 text-lg font-medium inline-flex items-center rounded-md">
                 Get Started
                 <ArrowRight className="ml-2" size={20} />
