@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
-      <body className="bg-retro-background dark:bg-dark-background text-retro-foreground dark:text-dark-text">
+      <body className="min-h-screen flex flex-col bg-retro-background dark:bg-dark-background text-retro-foreground dark:text-dark-text">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -32,7 +32,9 @@ export default function RootLayout({
           disableTransitionOnChange>
           <main className="min-h-screen flex flex-col items-center w-full">
             <Navbar />
-            <div className="flex flex-col gap-20 max-w-5xl p-5">{children}</div>
+            <div className="flex-grow flex flex-col gap-20 max-w-5xl p-5 w-full">
+              {children}
+            </div>
             <Footer />
           </main>
         </ThemeProvider>
