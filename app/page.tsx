@@ -1,5 +1,5 @@
 import Link from "next/link";
-// import GameSearch from "@/components/GameSearch";
+import GameSearch from "@/components/game-search";
 import { ArrowRight, Star, Users, Trophy } from "lucide-react";
 
 export default function Home() {
@@ -91,7 +91,7 @@ export default function Home() {
               Search through our extensive database of games
             </p>
           </div>
-          {/* <GameSearch /> */}
+          <GameSearch />
         </div>
       </section>
     </div>
