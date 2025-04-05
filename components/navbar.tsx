@@ -7,10 +7,22 @@ import { Menu, X, Search } from "lucide-react";
 import { signOutAction } from "@/lib/actions";
 import { Button } from "./ui/button";
 import { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import { searchGamesAction } from "@/lib/igdb/actions";
+
+// Define the Game interface
+interface Game {
+  id: number;
+  name: string;
+}
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<Game[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -21,6 +33,33 @@ export default function Navbar() {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      setSearchResults([]);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const results = await searchGamesAction(searchQuery);
+        setSearchResults(results);
+      } catch (error) {
+        console.error("Error searching games:", error);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  const handleGameSelect = (gameId: number) => {
+    router.push(`/games/${gameId}`);
+    setSearchQuery("");
+    setSearchResults([]);
+  };
 
   return (
     <nav className="w-full bg-retro-primary dark:bg-dark-primary text-white border-b-4 border-retro-accent dark:border-dark-accent">
@@ -49,7 +88,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
-            <div className="max-w-lg w-full lg:max-w-xs">
+            <div className="max-w-lg w-full lg:max-w-xs relative">
               <label htmlFor="search" className="sr-only">
                 Search
               </label>
@@ -60,11 +99,37 @@ export default function Navbar() {
                 <input
                   id="search"
                   name="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="block w-full pl-10 pr-3 py-2 border-2 border-retro-accent dark:border-dark-accent rounded-md leading-5 bg-white dark:bg-dark-background text-retro-text dark:text-dark-text placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-retro-secondary dark:focus:ring-dark-secondary focus:border-retro-secondary dark:focus:border-dark-secondary sm:text-sm"
                   placeholder="Search for games"
                   type="search"
                 />
               </div>
+              {searchResults.length > 0 ? (
+                <ul className="absolute z-10 mt-2 w-full bg-white dark:bg-dark-secondary border border-retro-accent dark:border-dark-accent rounded-md shadow-lg max-h-60 overflow-auto">
+                  {searchResults.map((game) => (
+                    <li
+                      key={game.id}
+                      onClick={() => handleGameSelect(game.id)}
+                      className="cursor-pointer px-4 py-2 hover:bg-retro-secondary dark:hover:bg-dark-secondary">
+                      {game.name}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                !isSearching &&
+                searchQuery && (
+                  <div className="absolute z-10 mt-2 w-full bg-white dark:bg-dark-secondary border border-retro-accent dark:border-dark-accent rounded-md shadow-lg p-4 text-center italic text-gray-500 dark:text-gray-400">
+                    No games found
+                  </div>
+                )
+              )}
+              {isSearching && (
+                <div className="absolute z-10 mt-2 w-full bg-white dark:bg-dark-secondary border border-retro-accent dark:border-dark-accent rounded-md shadow-lg p-4 text-center">
+                  Searching...
+                </div>
+              )}
             </div>
           </div>
           {user ? (
