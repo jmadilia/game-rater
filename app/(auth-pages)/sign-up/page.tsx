@@ -11,10 +11,10 @@ export default async function SignUp({
   const resolvedSearchParams = await searchParams;
   const supabase = createClient();
   const {
-    data: { session },
-  } = await (await supabase).auth.getSession();
+    data: { user },
+  } = await (await supabase).auth.getUser();
 
-  if (session) {
+  if (user) {
     return redirect("/protected");
   }
 
