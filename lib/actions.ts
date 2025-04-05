@@ -42,7 +42,7 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
   const supabase = createClient();
 
-  const { error } = await (
+  const { data: session, error } = await (
     await supabase
   ).auth.signInWithPassword({
     email,
@@ -53,7 +53,20 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", error.message);
   }
 
-  return redirect("/protected");
+  const user = session?.user;
+  if (user) {
+    const { data: profile } = await (await supabase)
+      .from("profiles")
+      .select("username")
+      .eq("id", user.id)
+      .single();
+
+    if (profile?.username) {
+      return redirect(`/profile/${profile.username}`);
+    }
+  }
+
+  return redirect("/sign-in"); // Fallback in case username is not found
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
