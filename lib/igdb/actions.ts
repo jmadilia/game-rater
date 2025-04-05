@@ -5,7 +5,7 @@ let tokenExpiration = 0;
 let clientId = process.env.TWITCH_CLIENT_ID;
 let clientSecret = process.env.TWITCH_CLIENT_SECRET;
 
-async function getTwitchAccessTokenAction() {
+export async function getTwitchAccessTokenAction() {
   if (accessToken && Date.now() < tokenExpiration) {
     return accessToken;
   }
