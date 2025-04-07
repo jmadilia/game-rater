@@ -64,3 +64,68 @@ export async function searchGamesAction(query: string) {
     throw error;
   }
 }
+
+export async function getPopularGamesAction() {
+  try {
+    const token = await getTwitchAccessTokenAction();
+
+    const igdbResponsePopularityPrimitives = await fetch(
+      "https://api.igdb.com/v4/popularity_primitives",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          "Client-ID": process.env.TWITCH_CLIENT_ID!,
+        },
+        body: `fields game_id; sort value desc; where popularity_type = 1;`,
+      }
+    );
+
+    if (!igdbResponsePopularityPrimitives.ok) {
+      const errorData = await igdbResponsePopularityPrimitives.json();
+      console.error("IGDB API error:", errorData);
+      throw new Error(
+        `IGDB API Popularity Primitives error: ${igdbResponsePopularityPrimitives.statusText}`
+      );
+    }
+
+    const popularGameIds = await igdbResponsePopularityPrimitives.json();
+    const gameIdsString = popularGameIds
+      .map((item: { game_id: number }) => item.game_id)
+      .join(",");
+
+    const igdbResponsePopularGameInfo = await fetch(
+      "https://api.igdb.com/v4/games",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+          "Client-ID": process.env.TWITCH_CLIENT_ID!,
+        },
+        body: `fields name,cover.url; where id = (${gameIdsString});`,
+      }
+    );
+
+    if (!igdbResponsePopularGameInfo.ok) {
+      const errorData = await igdbResponsePopularGameInfo.json();
+      console.error("IGDB API error:", errorData);
+      throw new Error(
+        `IGDB API error: ${igdbResponsePopularGameInfo.statusText}`
+      );
+    }
+
+    const games = await igdbResponsePopularGameInfo.json();
+
+    if (Array.isArray(games)) {
+      return games;
+    } else {
+      console.error("Unexpected response format from IGDB:", games);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching popular games:", error);
+    throw error;
+  }
+}
