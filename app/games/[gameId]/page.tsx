@@ -11,6 +11,8 @@ interface GameDetails {
   release_dates?: { human: string }[];
 }
 
+type paramsType = Promise<{ gameId: string }>;
+
 async function fetchGameDetails(gameId: string): Promise<GameDetails | null> {
   try {
     const token = await getTwitchAccessTokenAction();
@@ -38,13 +40,9 @@ async function fetchGameDetails(gameId: string): Promise<GameDetails | null> {
   }
 }
 
-export default async function GamePage({
-  params,
-}: {
-  params: { gameId: string };
-}) {
-  const resolvedParams = await Promise.resolve(params);
-  const game = await fetchGameDetails(resolvedParams.gameId);
+export default async function GamePage({ params }: { params: paramsType }) {
+  const { gameId } = await params;
+  const game = await fetchGameDetails(gameId);
 
   if (!game) {
     return (
