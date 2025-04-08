@@ -50,7 +50,7 @@ export default function Navbar() {
       } finally {
         setIsSearching(false);
       }
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery]);
@@ -107,7 +107,7 @@ export default function Navbar() {
                 />
               </div>
               {searchResults.length > 0 ? (
-                <ul className="absolute z-10 mt-2 w-full bg-white dark:bg-dark-secondary border border-retro-accent dark:border-dark-accent rounded-md shadow-lg max-h-60 overflow-auto">
+                <ul className="absolute z-10 mt-2 w-full bg-white text-black dark:text-white dark:bg-dark-secondary border border-retro-accent dark:border-dark-accent rounded-md shadow-lg max-h-60 overflow-auto">
                   {searchResults.map((game) => (
                     <li
                       key={game.id}
