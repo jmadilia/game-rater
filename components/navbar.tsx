@@ -136,7 +136,7 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               <form action={signOutAction}>
                 <Button
-                  className="hidden md:flex md:items-center md:space-x-4 text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary px-3 py-2 text-sm font-medium"
+                  className="hidden md:flex md:items-center md:space-x-4 text-white bg-retro-secondary hover:bg-retro-secondary/90 dark:bg-dark-secondary dark:hover:bg-dark-secondary/90 px-3 py-2 text-sm font-medium border-2 border-transparent rounded-md"
                   type="submit"
                   variant={"outline"}>
                   Sign out
