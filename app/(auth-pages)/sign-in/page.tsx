@@ -8,14 +8,14 @@ export default async function SignIn({
 }: {
   searchParams: Promise<Message>;
 }) {
-  const supabase = await createClient();
   const resolvedSearchParams = await searchParams;
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (user) {
-    return redirect("/protected");
+    return redirect("/profile");
   }
 
   return (
