@@ -72,18 +72,18 @@ export default function Navbar() {
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               <Link
                 href="/games"
-                className="text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary px-3 py-2 text-sm font-medium">
-                Games
+                className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
+                GAMES
               </Link>
               <Link
                 href="/reviews"
-                className="text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary px-3 py-2 text-sm font-medium">
-                Reviews
+                className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
+                REVIEWS
               </Link>
               <Link
                 href="/community"
-                className="text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary px-3 py-2 text-sm font-medium">
-                Community
+                className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
+                COMMUNITY
               </Link>
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               <form action={signOutAction}>
                 <Button
-                  className="hidden md:flex md:items-center md:space-x-4 text-white bg-retro-secondary hover:bg-retro-secondary/90 dark:bg-dark-secondary dark:hover:bg-dark-secondary/90 px-3 py-2 text-sm font-medium border-2 border-transparent rounded-md"
+                  className="hidden md:flex md:items-center md:space-x-4 text-white hover:text-white dark:hover:text-white bg-retro-orange hover:bg-retro-orange-dark dark:bg-dark-orange dark:hover:bg-dark-orange-dark px-3 py-2 text-sm font-medium border-2 border-transparent rounded-md"
                   type="submit"
                   variant={"outline"}>
                   Sign out
@@ -147,7 +147,7 @@ export default function Navbar() {
             <div className="hidden md:flex md:items-center md:space-x-4">
               <Link
                 href="/sign-in"
-                className="text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary px-3 py-2 text-sm font-medium">
+                className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
                 Sign in
               </Link>
               <Link
@@ -160,7 +160,7 @@ export default function Navbar() {
           <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary">
+              className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -172,17 +172,17 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href="/games"
-              className="block px-3 py-2 text-base font-medium text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary">
+              className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               Games
             </Link>
             <Link
               href="/reviews"
-              className="block px-3 py-2 text-base font-medium text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary">
+              className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               Reviews
             </Link>
             <Link
               href="/community"
-              className="block px-3 py-2 text-base font-medium text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary">
+              className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               Community
             </Link>
             {user ? (
@@ -198,7 +198,7 @@ export default function Navbar() {
               <div>
                 <Link
                   href="/sign-in"
-                  className="block px-3 py-2 text-base font-medium text-white hover:bg-retro-secondary dark:hover:bg-dark-secondary">
+                  className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
                   Sign in
                 </Link>
                 <Link

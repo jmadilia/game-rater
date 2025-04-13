@@ -61,6 +61,7 @@ const config = {
           highlight: "#A67DB8",
           soft: "#CEB1BE",
           orange: "#FF5733",
+          "orange-dark": "#E04C2E", // Slightly darker shade of retro orange
           text: "#2f2f2f",
         },
         dark: {
@@ -71,6 +72,7 @@ const config = {
           highlight: "#967DA8", // Slightly darker than light highlight
           soft: "#BEA1AE", // Slightly darker than light soft
           orange: "#FF6843", // Slightly lighter orange for better visibility
+          "orange-dark": "#E05A3A", // Slightly darker shade of dark orange
           text: "#e5e7eb", // Light gray for better readability on dark background
         },
       },

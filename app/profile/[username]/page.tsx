@@ -90,7 +90,7 @@ export default async function UserProfilePage({
             <div className="absolute bottom-0 right-8 transform translate-y-1/2">
               <Link
                 href="/profile"
-                className="bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 rounded-md">
+                className="bg-retro-orange hover:bg-retro-orange-dark dark:bg-dark-orange dark:hover:bg-dark-orange-dark text-white px-4 py-2 rounded-md">
                 Edit Profile
               </Link>
             </div>

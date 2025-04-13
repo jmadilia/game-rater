@@ -36,7 +36,10 @@ export default async function SignInForm({
           placeholder="Your password"
           required
         />
-        <SubmitButton pendingText="Signing In..." formAction={signInAction}>
+        <SubmitButton
+          className="bg-retro-primary hover:bg-retro-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary text-white"
+          pendingText="Signing In..."
+          formAction={signInAction}>
           Sign in
         </SubmitButton>
         <FormMessage message={searchParams} />

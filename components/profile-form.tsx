@@ -69,7 +69,7 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto">
       <Link href={`/profile/${profile?.username}`}>
-        <span className="px-4 py-2 bg-retro-primary text-white rounded text-center">
+        <span className="px-4 py-2 bg-retro-orange hover:bg-retro-orange-dark dark:bg-dark-orange dark:hover:bg-dark-orange-dark text-white rounded text-center">
           Go to profile
         </span>
       </Link>
