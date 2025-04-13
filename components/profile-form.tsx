@@ -4,6 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   updateUserProfile,
   type UserProfile,
@@ -66,7 +67,13 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto">
+      <Link href={`/profile/${profile?.username}`}>
+        <span className="px-4 py-2 bg-retro-primary text-white rounded text-center">
+          Go to profile
+        </span>
+      </Link>
+
       <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-6">
         <h2 className="text-2xl font-bold mb-6 text-retro-primary dark:text-dark-text">
           Edit Profile
