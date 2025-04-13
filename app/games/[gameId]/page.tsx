@@ -60,9 +60,9 @@ export default async function GamePage({ params }: { params: paramsType }) {
       <div className="flex flex-col items-center">
         {game.cover && (
           <img
-            src={game.cover.url.replace("t_thumb", "t_screenshot_med")}
+            src={game.cover.url.replace("t_thumb", "t_1080p")}
             alt={game.name}
-            className="w-full max-w-[569px] aspect-[569/320] object-cover rounded-lg mb-4 shadow-xl"
+            className="w-full max-w-xs object-cover rounded-lg mb-4 shadow-xl"
           />
         )}
         <h1 className="text-3xl font-bold mb-2">{game.name}</h1>
