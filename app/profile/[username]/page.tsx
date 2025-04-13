@@ -55,7 +55,7 @@ export default async function UserProfilePage({
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <div className="bg-white dark:bg-dark-secondary rounded-lg shadow overflow-hidden">
         {/* Profile Header */}
         <div className="bg-retro-primary dark:bg-dark-primary h-32 relative">
@@ -104,7 +104,7 @@ export default async function UserProfilePage({
           </h1>
 
           {/* User Stats */}
-          <div className="flex space-x-6 mt-4 text-retro-secondary-light dark:text-dark-secondary-light">
+          <div className="mt-4 text-retro-secondary-light dark:text-dark-secondary-light grid grid-cols-1 sm:flex sm:space-x-6 gap-4 sm:gap-0">
             <div className="flex items-center">
               <Star className="h-5 w-5 mr-1" />
               <span>{reviews.length} Reviews</span>
