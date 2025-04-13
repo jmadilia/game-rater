@@ -14,26 +14,26 @@ export default async function Games() {
     <div className="max-w-7xl space-y-4 p-6 px-4 sm:px-6 lg:px-8">
       <GameSearch />
       <h2 className="text-xl font-bold">Popular games</h2>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="space-y-4 sm:grid sm:grid-cols-4 sm:gap-4 sm:space-y-0">
         {popularGames.map((game) => (
           <a
             key={game.id}
             href={`/games/${game.id}`}
-            className="group flex flex-col items-center p-2 border rounded shadow hover:scale-105 transition-transform h-92">
+            className="cursor-pointer flex items-center sm:flex-col sm:items-center gap-4 sm:gap-0 p-4 border rounded shadow hover:bg-gray-100 dark:hover:bg-gray-800 transition">
             {game.cover?.url ? (
               <img
                 src={game.cover.url.replace("t_thumb", "t_720p")}
                 alt={game.name}
-                className="w-full min-h-80 object-cover rounded"
+                className="w-16 h-16 sm:w-full sm:h-auto object-cover rounded"
               />
             ) : (
-              <div className="w-full h-32 flex items-center justify-center bg-gray-200 rounded">
+              <div className="w-16 h-16 sm:w-full sm:h-32 flex items-center justify-center bg-gray-200 rounded">
                 <span className="text-sm text-gray-500">No Image</span>
               </div>
             )}
-            <p className="mt-2 text-center text-sm font-medium truncate w-full">
+            <span className="text-sm font-medium sm:mt-2 sm:text-center">
               {game.name}
-            </p>
+            </span>
           </a>
         ))}
       </div>
