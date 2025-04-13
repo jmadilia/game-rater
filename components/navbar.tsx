@@ -12,6 +12,7 @@ import { searchGamesAction } from "@/lib/igdb/actions";
 
 // Define the Game interface
 interface Game {
+  cover: any;
   id: number;
   name: string;
 }
@@ -112,8 +113,24 @@ export default function Navbar() {
                     <li
                       key={game.id}
                       onClick={() => handleGameSelect(game.id)}
-                      className="cursor-pointer px-4 py-2 hover:bg-retro-secondary dark:hover:bg-dark-secondary">
-                      {game.name}
+                      className="cursor-pointer px-4 py-2 hover:bg-retro-secondary dark:hover:bg-dark-secondary flex items-center gap-4">
+                      {game.cover?.url ? (
+                        <img
+                          src={game.cover.url.replace(
+                            "t_thumb",
+                            "t_cover_small"
+                          )}
+                          alt={game.name}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 flex items-center justify-center bg-gray-200 rounded">
+                          <span className="text-sm text-gray-500">
+                            No Image
+                          </span>
+                        </div>
+                      )}
+                      <span>{game.name}</span>
                     </li>
                   ))}
                 </ul>
