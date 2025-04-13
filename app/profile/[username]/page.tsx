@@ -18,6 +18,7 @@ import {
   Users,
   Trophy,
 } from "lucide-react";
+import { FaDiscord } from "react-icons/fa";
 import FollowButton from "@/components/follow-button";
 
 export default async function UserProfilePage({
@@ -172,7 +173,7 @@ export default async function UserProfilePage({
 
             {profile.discord_handle && (
               <div className="flex items-center text-retro-secondary dark:text-dark-secondary">
-                <MessageSquare className="h-5 w-5 mr-2" />
+                <FaDiscord className="h-5 w-5 mr-2" />
                 <span>{profile.discord_handle}</span>
               </div>
             )}
