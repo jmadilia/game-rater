@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="space-y-12 bg-retro-background dark:bg-dark-background text-retro-text dark:text-dark-text">
       {/* Hero Section */}
-      <section className="relative py-16 overflow-hidden rounded-lg">
+      <section className="relative py-16 overflow-hidden rounded-lg shadow-xl">
         <div className="absolute inset-0 bg-gradient-to-br from-retro-accent/20 to-retro-highlight/20 dark:from-dark-accent/20 dark:to-dark-highlight/20" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -40,7 +40,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-retro-primary dark:bg-dark-primary text-white rounded-lg">
+      <section className="py-16 bg-retro-primary dark:bg-dark-primary text-white rounded-lg shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Why Game Rater?</h2>
