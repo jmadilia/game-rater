@@ -6,6 +6,7 @@ import { Menu, X, Search } from "lucide-react";
 import { signOutAction } from "@/lib/actions";
 import { Button } from "./ui/button";
 import Avatar from "./avatar";
+import AvatarSkeleton from "./ui/skeletons";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -27,6 +28,7 @@ interface Game {
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -36,7 +38,8 @@ export default function Navbar() {
   useEffect(() => {
     fetch("/api/profile")
       .then((res) => res.json())
-      .then((data) => setProfile(data));
+      .then((data) => setProfile(data))
+      .finally(() => setProfileLoading(false));
   }, []);
 
   useEffect(() => {
@@ -166,8 +169,10 @@ export default function Navbar() {
               )}
             </div>
           </div>
-          {profile ? (
-            <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
+            {profileLoading ? (
+              <AvatarSkeleton className="w-10 h-10 rounded-full" />
+            ) : profile ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="focus:outline-none">
@@ -198,21 +203,21 @@ export default function Navbar() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
-          ) : (
-            <div className="hidden md:flex md:items-center md:space-x-4">
-              <Link
-                href="/sign-in"
-                className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
-                SIGN IN
-              </Link>
-              <Link
-                href="/sign-up"
-                className="bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 text-sm font-medium border-2 border-transparent rounded-md w-auto inline-block">
-                SIGN UP
-              </Link>
-            </div>
-          )}
+            ) : (
+              <div className="hidden md:flex md:items-center md:space-x-4">
+                <Link
+                  href="/sign-in"
+                  className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
+                  SIGN IN
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 text-sm font-medium border-2 border-transparent rounded-md w-auto inline-block">
+                  SIGN UP
+                </Link>
+              </div>
+            )}
+          </div>
           <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
