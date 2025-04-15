@@ -10,9 +10,24 @@ export async function GET(request: Request) {
   const origin = requestUrl.origin;
   const redirectTo = requestUrl.searchParams.get("redirect_to")?.toString();
 
+  let username: string | null = null;
   if (code) {
     const supabase = createClient();
     await (await supabase).auth.exchangeCodeForSession(code);
+    // Fetch user and username
+    const {
+      data: { user },
+    } = await (await supabase).auth.getUser();
+    if (user) {
+      const { data: profile } = await (await supabase)
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+      if (profile?.username) {
+        username = profile.username;
+      }
+    }
   }
 
   if (redirectTo) {
@@ -20,5 +35,8 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign up process completes
+  if (username) {
+    return NextResponse.redirect(`${origin}/profile/${username}`);
+  }
   return NextResponse.redirect(`${origin}/profile`);
 }
