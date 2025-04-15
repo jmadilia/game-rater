@@ -9,6 +9,14 @@ import { Button } from "./ui/button";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { searchGamesAction } from "@/lib/igdb/actions";
+import Avatar from "./avatar";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "./ui/dropdown-menu";
 
 // Define the Game interface
 interface Game {
@@ -165,14 +173,41 @@ export default function Navbar() {
           </div>
           {user ? (
             <div className="flex items-center gap-4">
-              <form action={signOutAction}>
-                <Button
-                  className="hidden md:flex md:items-center md:space-x-4 text-white hover:text-white dark:hover:text-white bg-retro-orange hover:bg-retro-orange-dark dark:bg-dark-orange dark:hover:bg-dark-orange-dark px-3 py-2 text-sm font-medium border-2 border-transparent rounded-md"
-                  type="submit"
-                  variant={"outline"}>
-                  Sign out
-                </Button>
-              </form>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="focus:outline-none">
+                    <Avatar
+                      url={user.user_metadata?.avatar_url || null}
+                      username={
+                        user.user_metadata?.username || user.email || "U"
+                      }
+                      size={40}
+                    />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href={`/profile/${user.user_metadata?.username || user.id}`}>
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile/collection">Collection</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile/reviews">Reviews</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <form action={signOutAction}>
+                      <button type="submit" className="w-full text-left">
+                        Sign Out
+                      </button>
+                    </form>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           ) : (
             <div className="hidden md:flex md:items-center md:space-x-4">
