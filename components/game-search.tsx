@@ -78,24 +78,28 @@ export default function GameSearch() {
         <p className="text-retro-orange dark:text-dark-orange">{error}</p>
       )}
       {games.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="space-y-4 sm:grid sm:grid-cols-4 sm:gap-4 sm:space-y-0 w-full">
           {games.map((game) => (
             <div
               key={game.id}
-              className="bg-white dark:bg-dark-secondary p-4 rounded-lg shadow-lg border border-retro-accent dark:border-dark-accent">
-              {game.cover && (
+              className="cursor-pointer flex items-center sm:flex-col sm:items-center gap-4 sm:gap-0 p-4 border rounded shadow bg-white dark:bg-dark-secondary border-retro-accent dark:border-dark-accent hover:bg-gray-100 dark:hover:bg-gray-800 transition max-w-sm mx-auto sm:max-w-none">
+              {game.cover?.url ? (
                 <img
-                  src={game.cover.url || "/placeholder.svg"}
+                  src={game.cover.url.replace("t_thumb", "t_720p")}
                   alt={game.name}
-                  className="w-full h-48 object-cover mb-4 rounded-md"
+                  className="w-16 h-16 sm:w-full sm:h-auto object-cover rounded"
                 />
+              ) : (
+                <div className="w-16 h-16 sm:w-full sm:h-32 flex items-center justify-center bg-gray-200 rounded">
+                  <span className="text-sm text-gray-500">No Image</span>
+                </div>
               )}
-              <h3 className="font-semibold text-lg mb-2 text-retro-primary dark:text-dark-text">
+              <span className="text-sm font-medium sm:mt-2 sm:text-center">
                 {game.name}
-              </h3>
+              </span>
               <button
                 onClick={() => addToLibrary(game)}
-                className="bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out">
+                className="ml-auto sm:ml-0 bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out min-w-[140px] text-center">
                 Add to Library
               </button>
             </div>
@@ -103,7 +107,7 @@ export default function GameSearch() {
         </div>
       ) : (
         !isLoading && (
-          <p className="text-retro-secondary dark:text-dark-secondary">
+          <p className="items-center text-retro-secondary dark:text-dark-secondary">
             No games found. Try a different search term.
           </p>
         )

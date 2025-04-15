@@ -91,7 +91,7 @@ export default function Navbar() {
           <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
             <div className="max-w-lg w-full lg:max-w-xs relative">
               <label htmlFor="search" className="sr-only">
-                Search
+                SEARCH
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -165,12 +165,12 @@ export default function Navbar() {
               <Link
                 href="/sign-in"
                 className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
-                Sign in
+                SIGN IN
               </Link>
               <Link
                 href="/sign-up"
-                className="bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 text-sm font-medium border-2 border-transparent rounded-md">
-                Sign up
+                className="bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 text-sm font-medium border-2 border-transparent rounded-md w-auto inline-block">
+                SIGN UP
               </Link>
             </div>
           )}
@@ -190,17 +190,17 @@ export default function Navbar() {
             <Link
               href="/games"
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
-              Games
+              GAMES
             </Link>
             <Link
               href="/reviews"
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
-              Reviews
+              REVIEWS
             </Link>
             <Link
               href="/community"
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
-              Community
+              COMMUNITY
             </Link>
             {user ? (
               <form action={signOutAction}>
@@ -208,7 +208,7 @@ export default function Navbar() {
                   className="block px-3 py-2 text-base font-medium bg-retro-orange dark:bg-dark-orange text-white rounded-md"
                   type="submit"
                   variant={"outline"}>
-                  Sign out
+                  SIGN OUT
                 </Button>
               </form>
             ) : (
@@ -216,12 +216,12 @@ export default function Navbar() {
                 <Link
                   href="/sign-in"
                   className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
-                  Sign in
+                  SIGN IN
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="block px-3 py-2 text-base font-medium bg-retro-orange dark:bg-dark-orange text-white rounded-md">
-                  Sign up
+                  className="inline-block px-3 py-2 text-base font-medium bg-retro-orange dark:bg-dark-orange text-white rounded-md w-auto">
+                  SIGN UP
                 </Link>
               </div>
             )}
