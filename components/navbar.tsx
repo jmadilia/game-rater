@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, Search } from "lucide-react";
 import { signOutAction } from "@/lib/actions";
 import { Button } from "./ui/button";
@@ -24,6 +24,7 @@ export default function Navbar() {
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const router = useRouter();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -55,6 +56,19 @@ export default function Navbar() {
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleGameSelect = (gameId: number) => {
     router.push(`/games/${gameId}`);
@@ -185,25 +199,30 @@ export default function Navbar() {
       </div>
       {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden bg-retro-primary dark:bg-dark-primary">
+        <div
+          ref={menuRef}
+          className="md:hidden bg-retro-primary dark:bg-dark-primary">
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href="/games"
+              onClick={() => setIsOpen(false)}
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               GAMES
             </Link>
             <Link
               href="/reviews"
+              onClick={() => setIsOpen(false)}
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               REVIEWS
             </Link>
             <Link
               href="/community"
+              onClick={() => setIsOpen(false)}
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               COMMUNITY
             </Link>
             {user ? (
-              <form action={signOutAction}>
+              <form action={signOutAction} onSubmit={() => setIsOpen(false)}>
                 <Button
                   className="block px-3 py-2 text-base font-medium bg-retro-orange dark:bg-dark-orange text-white rounded-md"
                   type="submit"
@@ -215,11 +234,13 @@ export default function Navbar() {
               <div>
                 <Link
                   href="/sign-in"
+                  onClick={() => setIsOpen(false)}
                   className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
                   SIGN IN
                 </Link>
                 <Link
                   href="/sign-up"
+                  onClick={() => setIsOpen(false)}
                   className="inline-block px-3 py-2 text-base font-medium bg-retro-orange dark:bg-dark-orange text-white rounded-md w-auto">
                   SIGN UP
                 </Link>
