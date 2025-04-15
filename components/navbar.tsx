@@ -1,14 +1,10 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, Search } from "lucide-react";
 import { signOutAction } from "@/lib/actions";
 import { Button } from "./ui/button";
-import { User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
-import { searchGamesAction } from "@/lib/igdb/actions";
 import Avatar from "./avatar";
 import {
   DropdownMenu,
@@ -17,6 +13,9 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { searchGamesAction } from "@/lib/igdb/actions";
+import type { UserProfile } from "@/lib/user/user";
 
 // Define the Game interface
 interface Game {
@@ -27,7 +26,7 @@ interface Game {
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -35,13 +34,9 @@ export default function Navbar() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const supabase = createClient();
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-    };
-
-    fetchUser();
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => setProfile(data));
   }, []);
 
   useEffect(() => {
@@ -171,26 +166,21 @@ export default function Navbar() {
               )}
             </div>
           </div>
-          {user ? (
+          {profile ? (
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="focus:outline-none">
                     <Avatar
-                      url={user.user_metadata?.avatar_url || null}
-                      username={
-                        user.user_metadata?.username || user.email || "U"
-                      }
+                      url={profile.avatar_url || null}
+                      username={profile.username}
                       size={40}
                     />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild>
-                    <Link
-                      href={`/profile/${user.user_metadata?.username || user.id}`}>
-                      Profile
-                    </Link>
+                    <Link href={`/profile/${profile.username}`}>Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/profile/collection">Collection</Link>
@@ -256,7 +246,7 @@ export default function Navbar() {
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               COMMUNITY
             </Link>
-            {user ? (
+            {profile ? (
               <form action={signOutAction} onSubmit={() => setIsOpen(false)}>
                 <Button
                   className="block px-3 py-2 text-base font-medium bg-retro-orange dark:bg-dark-orange text-white rounded-md"
