@@ -50,7 +50,7 @@ export const signInAction = async (formData: FormData) => {
   });
 
   if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
+    return { error: error.message };
   }
 
   const user = session?.user;
@@ -60,13 +60,11 @@ export const signInAction = async (formData: FormData) => {
       .select("username")
       .eq("id", user.id)
       .single();
-
     if (profile?.username) {
-      return redirect(`/profile/${profile.username}`);
+      return { success: true, username: profile.username };
     }
   }
-
-  return redirect("/sign-in"); // Fallback in case username is not found
+  return { error: "Sign in failed" };
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -147,5 +145,5 @@ export const resetPasswordAction = async (formData: FormData) => {
 export const signOutAction = async () => {
   const supabase = createClient();
   await (await supabase).auth.signOut();
-  return redirect("/sign-in");
+  return { success: true };
 };

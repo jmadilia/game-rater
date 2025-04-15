@@ -16,6 +16,7 @@ import {
 } from "./ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { searchGamesAction } from "@/lib/igdb/actions";
+import { createClient } from "@/utils/supabase/client";
 import type { UserProfile } from "@/lib/user/user";
 
 // Define the Game interface
@@ -36,10 +37,36 @@ export default function Navbar() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/api/profile")
-      .then((res) => res.json())
-      .then((data) => setProfile(data))
-      .finally(() => setProfileLoading(false));
+    const supabase = createClient();
+
+    async function fetchProfile() {
+      setProfileLoading(true);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        setProfile(null);
+        setProfileLoading(false);
+        return;
+      }
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+      setProfile(data || null);
+      setProfileLoading(false);
+    }
+
+    fetchProfile();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      fetchProfile();
+    });
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -195,7 +222,12 @@ export default function Navbar() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <form action={signOutAction}>
+                    <form
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        await signOutAction();
+                        window.location.href = "/";
+                      }}>
                       <button type="submit" className="w-full text-left">
                         Sign Out
                       </button>
