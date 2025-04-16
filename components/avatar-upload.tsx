@@ -91,6 +91,8 @@ export default function AvatarUpload({
             alt="Avatar"
             fill
             className="object-cover"
+            sizes={`(max-width: 768px) ${size}px, (max-width: ${size}px) 50vw, 33vw`}
+            priority
           />
         ) : (
           <div className="h-full w-full flex items-center justify-center text-retro-primary dark:text-dark-text text-4xl font-bold">
