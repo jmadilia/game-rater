@@ -284,7 +284,13 @@ export default function Navbar() {
               COMMUNITY
             </Link>
             {profile ? (
-              <form action={signOutAction} onSubmit={() => setIsOpen(false)}>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setIsOpen(false);
+                  await signOutAction();
+                  window.location.href = "/";
+                }}>
                 <Button
                   className="block px-3 py-2 text-base font-medium bg-retro-orange dark:bg-dark-orange text-white rounded-md"
                   type="submit"
