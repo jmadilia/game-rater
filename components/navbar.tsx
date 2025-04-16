@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, Gamepad2Icon as GameController } from "lucide-react";
 import { signOutAction } from "@/lib/actions";
 import { Button } from "./ui/button";
 import Avatar from "./avatar";
@@ -113,9 +113,12 @@ export default function Navbar() {
     <nav className="w-full bg-retro-primary dark:bg-dark-primary text-white border-b-4 border-retro-accent dark:border-dark-accent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0">
-              <span className="text-2xl font-bold">Game Rater</span>
+          <div className="flex items-center space-x-4 md:space-x-8">
+            <Link href="/" className="flex-shrink-0 flex items-center gap-2">
+              <GameController className="h-8 w-8" />
+              <span className="hidden md:block text-2xl font-bold">
+                Game Rater
+              </span>
             </Link>
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               <Link
@@ -196,7 +199,7 @@ export default function Navbar() {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-8">
             {profileLoading ? (
               <AvatarSkeleton className="w-10 h-10 rounded-full" />
             ) : profile ? (
@@ -250,7 +253,7 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden ml-2">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
