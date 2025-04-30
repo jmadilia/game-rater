@@ -40,6 +40,14 @@ export default async function UserProfilePage({
     getUserFollowing(profile.id),
   ]);
 
+  // Fetch top 5 game details from IGDB
+  const topFiveGameIds = gameCompletions.slice(0, 5).map((g) => g.game_id);
+  let gameDetails: Record<number, { name: string }> = {};
+  if (topFiveGameIds.length > 0) {
+    const { getMultipleGameDetails } = await import("@/lib/game/game");
+    gameDetails = await getMultipleGameDetails(topFiveGameIds);
+  }
+
   // Check if current user is viewing their own profile
   const supabase = createClient();
   const {
@@ -235,20 +243,29 @@ export default async function UserProfilePage({
         </div>
 
         {/* Games Collection */}
-        <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold mb-4 text-retro-primary dark:text-dark-text">
-            Games Collection
-          </h2>
+        <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-6 relative">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-retro-primary dark:text-dark-text">
+              Games Collection
+            </h2>
+            <Link
+              href={`/profile/${username}/collection`}
+              className="bg-retro-primary dark:bg-dark-primary text-white px-3 py-1.5 rounded-md text-sm hover:bg-retro-secondary dark:hover:bg-dark-secondary transition"
+              style={{ minWidth: 0 }}>
+              View Collection
+            </Link>
+          </div>
 
           {gameCompletions.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-4 mt-4">
               {gameCompletions.slice(0, 5).map((completion) => (
                 <div
                   key={completion.id}
                   className="border-b border-retro-accent dark:border-dark-accent pb-4 last:border-0">
                   <div className="flex justify-between">
                     <h3 className="font-semibold text-retro-primary dark:text-dark-text">
-                      Game #{completion.game_id}
+                      {gameDetails[completion.game_id]?.name ||
+                        `Game #${completion.game_id}`}
                     </h3>
                     <span className="px-2 py-1 text-xs rounded-full bg-retro-accent dark:bg-dark-accent text-white">
                       {completion.status}
