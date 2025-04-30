@@ -1,8 +1,12 @@
 "use client";
 
+import type React from "react";
+
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { searchGamesAction } from "@/lib/igdb/actions";
+import AddToCollectionButton from "@/components/add-to-collection-button";
+import { Loader2 } from "lucide-react";
 
 interface Game {
   id: number;
@@ -20,6 +24,8 @@ export default function GameSearch() {
   const supabase = createClient();
 
   const handleSearch = async () => {
+    if (!query.trim()) return;
+
     setIsLoading(true);
     setError(null);
     try {
@@ -34,26 +40,9 @@ export default function GameSearch() {
     }
   };
 
-  const addToLibrary = async (game: Game) => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      alert("Please sign in to add games to your library");
-      return;
-    }
-
-    const { error } = await supabase.from("game_completion").insert({
-      user_id: user.id,
-      game_id: game.id,
-      status: "Playing",
-    });
-
-    if (error) {
-      console.error("Error adding game to library:", error);
-      alert("Error adding game to library");
-    } else {
-      alert("Game added to library");
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
     }
   };
 
@@ -64,14 +53,22 @@ export default function GameSearch() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Search for games"
           className="w-3/4 border-2 border-retro-accent dark:border-dark-accent rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-retro-secondary dark:focus:ring-dark-secondary focus:border-retro-secondary dark:focus:border-dark-secondary bg-white dark:bg-dark-background text-retro-text dark:text-dark-text"
         />
         <button
           onClick={handleSearch}
           className="bg-retro-primary hover:bg-retro-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary text-white px-6 py-2 rounded-md transition duration-150 ease-in-out"
-          disabled={isLoading}>
-          {isLoading ? "Searching..." : "Search"}
+          disabled={isLoading || !query.trim()}>
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span>Searching...</span>
+            </div>
+          ) : (
+            "Search"
+          )}
         </button>
       </div>
       {error && (
@@ -82,31 +79,32 @@ export default function GameSearch() {
           {games.map((game) => (
             <div
               key={game.id}
-              className="cursor-pointer flex items-center sm:flex-col sm:items-center gap-4 sm:gap-0 p-4 border rounded shadow bg-white dark:bg-dark-secondary border-retro-accent dark:border-dark-accent hover:bg-gray-100 dark:hover:bg-gray-800 transition max-w-sm mx-auto sm:max-w-none">
-              {game.cover?.url ? (
+              className="cursor-pointer flex flex-col items-center h-full sm:flex-col sm:items-center gap-4 sm:gap-0 p-4 border rounded shadow bg-white dark:bg-dark-secondary border-retro-accent dark:border-dark-accent hover:bg-gray-100 dark:hover:bg-gray-800 transition max-w-sm mx-auto sm:max-w-none">
+              {game.cover ? (
                 <img
                   src={game.cover.url.replace("t_thumb", "t_720p")}
                   alt={game.name}
-                  className="w-16 h-16 sm:w-full sm:h-auto object-cover rounded"
+                  className="w-16 h-24 sm:w-full sm:h-64 object-cover rounded"
                 />
               ) : (
-                <div className="w-16 h-16 sm:w-full sm:h-32 flex items-center justify-center bg-gray-200 rounded">
-                  <span className="text-sm text-gray-500">No Image</span>
+                <div className="w-16 h-24 sm:w-full sm:h-64 flex items-center justify-center bg-gray-200 rounded">
+                  <span className="text-gray-500 dark:text-gray-400">
+                    No image
+                  </span>
                 </div>
               )}
-              <span className="text-sm font-medium sm:mt-2 sm:text-center">
+              <h3 className="text-lg mb-4 text-retro-primary dark:text-dark-text sm:mt-2 sm:text-center">
                 {game.name}
-              </span>
-              <button
-                onClick={() => addToLibrary(game)}
-                className="ml-auto sm:ml-0 bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out min-w-[140px] text-center">
-                Add to Library
-              </button>
+              </h3>
+              <div className="mt-auto w-full flex justify-center">
+                <AddToCollectionButton gameId={game.id} />
+              </div>
             </div>
           ))}
         </div>
       ) : (
-        !isLoading && (
+        !isLoading &&
+        query.trim() && (
           <p className="items-center text-retro-secondary dark:text-dark-secondary">
             No games found. Try a different search term.
           </p>
