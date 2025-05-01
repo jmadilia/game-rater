@@ -214,14 +214,29 @@ export default function Navbar() {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  {/* Mobile nav links for signed-in users, only visible on small screens */}
+                  <div className="md:hidden">
+                    <DropdownMenuItem asChild>
+                      <Link href="/games">GAMES</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/reviews">REVIEWS</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/community">COMMUNITY</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </div>
                   <DropdownMenuItem asChild>
-                    <Link href={`/profile/${profile.username}`}>Profile</Link>
+                    <Link href={`/profile/${profile.username}`}>
+                      My Profile
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/profile/collection">Collection</Link>
+                    <Link href="/profile/collection">My Collection</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/profile/reviews">Reviews</Link>
+                    <Link href="/profile/reviews">My Reviews</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -253,13 +268,16 @@ export default function Navbar() {
               </div>
             )}
           </div>
-          <div className="flex items-center md:hidden ml-2">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+          {/* Only show mobile menu button if NOT signed in */}
+          {!profile && (
+            <div className="flex items-center md:hidden ml-2">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          )}
         </div>
       </div>
       {/* Mobile menu */}
