@@ -21,12 +21,14 @@ import {
 import { FaDiscord } from "react-icons/fa";
 import FollowButton from "@/components/follow-button";
 
+type paramsType = Promise<{ username: string }>;
+
 export default async function UserProfilePage({
   params,
 }: {
-  params: Promise<{ username: string }>;
+  params: paramsType;
 }) {
-  const { username } = await params;
+  const username = (await params).username;
   const profile = await getUserProfileByUsername(username);
 
   if (!profile) {

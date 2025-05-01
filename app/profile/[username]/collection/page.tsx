@@ -4,10 +4,12 @@ import GameCollectionList from "@/components/game-collection-list";
 import { getUserProfileByUsername } from "@/lib/user/user";
 import { redirect } from "next/navigation";
 
+type paramsType = Promise<{ username: string }>;
+
 export default async function CollectionPage({
   params,
 }: {
-  params: { username: string };
+  params: paramsType;
 }) {
   const supabase = await createClient();
   const {
@@ -19,7 +21,7 @@ export default async function CollectionPage({
     redirect("/login");
   }
 
-  const { username } = await params;
+  const username = (await params).username;
   const profile = await getUserProfileByUsername(username);
   if (!profile) {
     return (
