@@ -1,4 +1,5 @@
 import { getTwitchAccessTokenAction } from "@/lib/igdb/actions";
+import AddToCollectionButton from "@/components/add-to-collection-button";
 
 interface GameDetails {
   id: number;
@@ -41,8 +42,8 @@ async function fetchGameDetails(gameId: string): Promise<GameDetails | null> {
 }
 
 export default async function GamePage({ params }: { params: paramsType }) {
-  const { gameId } = await params;
-  const game = await fetchGameDetails(gameId);
+  const resolvedParams = await params;
+  const game = await fetchGameDetails(resolvedParams.gameId);
 
   if (!game) {
     return (
@@ -66,6 +67,9 @@ export default async function GamePage({ params }: { params: paramsType }) {
           />
         )}
         <h1 className="text-3xl font-bold mb-2">{game.name}</h1>
+        <div className="mb-4">
+          <AddToCollectionButton gameId={game.id} />
+        </div>
         {game.genres && (
           <p className="text-gray-600 dark:text-gray-300 mb-2">
             Genres: {game.genres.map((genre) => genre.name).join(", ")}

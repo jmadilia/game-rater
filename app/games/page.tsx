@@ -24,10 +24,10 @@ export default async function Games() {
               <img
                 src={game.cover.url.replace("t_thumb", "t_720p")}
                 alt={game.name}
-                className="w-16 h-16 sm:w-full sm:h-auto object-cover rounded"
+                className="w-16 h-24 sm:w-full sm:h-64 object-cover rounded"
               />
             ) : (
-              <div className="w-16 h-16 sm:w-full sm:h-32 flex items-center justify-center bg-gray-200 rounded">
+              <div className="w-16 h-24 sm:w-full sm:h-64 flex items-center justify-center bg-gray-200 rounded">
                 <span className="text-sm text-gray-500">No Image</span>
               </div>
             )}
