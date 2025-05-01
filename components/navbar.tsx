@@ -131,11 +131,6 @@ export default function Navbar() {
                 className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
                 REVIEWS
               </Link>
-              <Link
-                href="/community"
-                className="text-white hover:text-retro-secondary dark:hover:text-dark-secondary px-3 py-2 text-sm font-medium">
-                COMMUNITY
-              </Link>
             </div>
           </div>
           <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
@@ -222,9 +217,6 @@ export default function Navbar() {
                     <DropdownMenuItem asChild>
                       <Link href="/reviews">REVIEWS</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/community">COMMUNITY</Link>
-                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </div>
                   <DropdownMenuItem asChild>
@@ -297,12 +289,6 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
               REVIEWS
-            </Link>
-            <Link
-              href="/community"
-              onClick={() => setIsOpen(false)}
-              className="block px-3 py-2 text-base font-medium text-white hover:text-retro-secondary dark:hover:text-dark-secondary">
-              COMMUNITY
             </Link>
             {profile ? (
               <form
