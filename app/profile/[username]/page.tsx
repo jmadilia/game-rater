@@ -264,7 +264,7 @@ export default async function UserProfilePage({
                 <div
                   key={completion.id}
                   className="border-b border-retro-accent dark:border-dark-accent pb-4 last:border-0">
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <h3 className="font-semibold text-retro-primary dark:text-dark-text">
                       {gameDetails[completion.game_id]?.name ||
                         `Game #${completion.game_id}`}
