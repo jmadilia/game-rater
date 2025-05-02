@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+import { getMultipleGameDetails } from "@/lib/game/game";
 
 // Define types for user profile data
 export interface UserProfile {
@@ -223,18 +224,31 @@ export async function deleteUserProfile(): Promise<{
 export async function getUserReviews(userId: string): Promise<any[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  const { data: reviews, error } = await supabase
     .from("reviews")
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
 
-  if (error) {
+  if (error || !reviews) {
     console.error("Error fetching user reviews:", error);
     return [];
   }
 
-  return data || [];
+  // Collect unique game_ids
+  const gameIds = Array.from(new Set(reviews.map((r) => r.game_id)));
+  let gameDetails: Record<number, { name: string; cover?: { url: string } }> =
+    {};
+  if (gameIds.length > 0) {
+    gameDetails = await getMultipleGameDetails(gameIds);
+  }
+
+  // Attach game_name and game_cover to each review
+  return reviews.map((review) => ({
+    ...review,
+    game_name: gameDetails[review.game_id]?.name || null,
+    game_cover: gameDetails[review.game_id]?.cover?.url || null,
+  }));
 }
 
 // Get user's game completion status

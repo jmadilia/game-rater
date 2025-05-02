@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { FaDiscord } from "react-icons/fa";
 import FollowButton from "@/components/follow-button";
+import { getMultipleGameDetails } from "@/lib/game/game";
 
 type paramsType = Promise<{ username: string }>;
 
@@ -46,7 +47,6 @@ export default async function UserProfilePage({
   const topFiveGameIds = gameCompletions.slice(0, 5).map((g) => g.game_id);
   let gameDetails: Record<number, { name: string }> = {};
   if (topFiveGameIds.length > 0) {
-    const { getMultipleGameDetails } = await import("@/lib/game/game");
     gameDetails = await getMultipleGameDetails(topFiveGameIds);
   }
 
@@ -79,6 +79,7 @@ export default async function UserProfilePage({
                   width={96}
                   height={96}
                   className="h-full w-full object-cover"
+                  priority
                 />
               ) : (
                 <div className="h-full w-full flex items-center justify-center text-white text-2xl font-bold">
@@ -193,57 +194,6 @@ export default async function UserProfilePage({
 
       {/* Recent Activity */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Recent Reviews */}
-        <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold mb-4 text-retro-primary dark:text-dark-text">
-            Recent Reviews
-          </h2>
-
-          {reviews.length > 0 ? (
-            <div className="space-y-4">
-              {reviews.slice(0, 5).map((review) => (
-                <div
-                  key={review.id}
-                  className="border-b border-retro-accent dark:border-dark-accent pb-4 last:border-0">
-                  <div className="flex justify-between">
-                    <h3 className="font-semibold text-retro-primary dark:text-dark-text">
-                      Game #{review.game_id}
-                    </h3>
-                    <div className="flex">
-                      {Array.from({ length: review.rating }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-5 w-5 text-retro-orange dark:text-dark-orange"
-                          fill="currentColor"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  {review.review_text && (
-                    <p className="mt-2 text-retro-text dark:text-dark-text line-clamp-3">
-                      {review.review_text}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-retro-secondary-light dark:text-dark-secondary-light">
-              No reviews yet.
-            </p>
-          )}
-
-          {reviews.length > 5 && (
-            <div className="mt-4">
-              <Link
-                href={`/profile/${username}/reviews`}
-                className="text-retro-primary dark:text-dark-accent hover:underline">
-                View all reviews
-              </Link>
-            </div>
-          )}
-        </div>
-
         {/* Games Collection */}
         <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-6 relative">
           <div className="flex items-center justify-between mb-6">
@@ -285,9 +235,68 @@ export default async function UserProfilePage({
           {gameCompletions.length > 5 && (
             <div className="mt-4">
               <Link
-                href={`/profile/${username}/games`}
+                href={`/profile/${username}/collection`}
                 className="text-retro-primary dark:text-dark-accent hover:underline">
                 View all games
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Recent Reviews */}
+        <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-retro-primary dark:text-dark-text">
+              Recent Reviews
+            </h2>
+            <Link
+              href={`/profile/${username}/reviews`}
+              className="bg-retro-primary dark:bg-dark-primary text-white px-3 py-1.5 rounded-md text-sm hover:bg-retro-secondary dark:hover:bg-dark-secondary transition"
+              style={{ minWidth: 0 }}>
+              View Reviews
+            </Link>
+          </div>
+
+          {reviews.length > 0 ? (
+            <div className="space-y-4">
+              {reviews.slice(0, 5).map((review) => (
+                <div
+                  key={review.id}
+                  className="border-b border-retro-accent dark:border-dark-accent pb-4 last:border-0">
+                  <div className="flex justify-between">
+                    <h3 className="font-semibold text-retro-primary dark:text-dark-text">
+                      {review.game_name || `Game #${review.game_id}`}
+                    </h3>
+                    <div className="flex">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-5 w-5 text-retro-orange dark:text-dark-orange"
+                          fill="currentColor"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  {review.review_text && (
+                    <p className="mt-2 text-retro-text dark:text-dark-text line-clamp-3">
+                      {review.review_text}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-retro-secondary-light dark:text-dark-secondary-light">
+              No reviews yet.
+            </p>
+          )}
+
+          {reviews.length > 5 && (
+            <div className="mt-4">
+              <Link
+                href={`/profile/${username}/reviews`}
+                className="text-retro-primary dark:text-dark-accent hover:underline">
+                View all reviews
               </Link>
             </div>
           )}
