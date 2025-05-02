@@ -1,5 +1,16 @@
+import { createClient } from "@/utils/supabase/server";
 import { getTwitchAccessTokenAction } from "@/lib/igdb/actions";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import {
+  getGameReviews,
+  getUserReviewForGame,
+  getGameAverageRating,
+} from "@/lib/review/review";
 import AddToCollectionButton from "@/components/add-to-collection-button";
+import WriteReviewButton from "@/components/write-review-button";
+import ReviewList from "@/components/review-list";
+import GameRating from "@/components/game-rating";
 
 interface GameDetails {
   id: number;
@@ -44,6 +55,7 @@ async function fetchGameDetails(gameId: string): Promise<GameDetails | null> {
 export default async function GamePage({ params }: { params: paramsType }) {
   const resolvedParams = await params;
   const game = await fetchGameDetails(resolvedParams.gameId);
+  const gameId = Number.parseInt(resolvedParams.gameId);
 
   if (!game) {
     return (
@@ -54,6 +66,22 @@ export default async function GamePage({ params }: { params: paramsType }) {
         </p>
       </div>
     );
+  }
+
+  const [reviews, rating] = await Promise.all([
+    getGameReviews(gameId),
+    getGameAverageRating(gameId),
+  ]);
+
+  // Check if the current user has already reviewed this game
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  let userReview = null;
+  if (session?.user) {
+    userReview = await getUserReviewForGame(session.user.id, gameId);
   }
 
   return (
@@ -67,8 +95,30 @@ export default async function GamePage({ params }: { params: paramsType }) {
           />
         )}
         <h1 className="text-3xl font-bold mb-2">{game.name}</h1>
-        <div className="mb-4">
-          <AddToCollectionButton gameId={game.id} />
+        <div className="flex flex-col space-y-2 mb-4">
+          {rating && (
+            <GameRating
+              average={rating.average}
+              count={rating.count}
+              size="md"
+            />
+          )}
+          <AddToCollectionButton gameId={gameId} />
+
+          {session ? (
+            <WriteReviewButton
+              gameId={gameId}
+              gameName={game.name}
+              existingReview={userReview}
+              variant="secondary"
+            />
+          ) : (
+            <a
+              href="/login"
+              className="flex items-center gap-2 px-4 py-2 rounded-md bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white transition duration-150 ease-in-out">
+              Log in to Review
+            </a>
+          )}
         </div>
         {game.genres && (
           <p className="text-gray-600 dark:text-gray-300 mb-2">
@@ -85,6 +135,54 @@ export default async function GamePage({ params }: { params: paramsType }) {
             {game.summary}
           </p>
         )}
+
+        {/* Reviews Section */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-6 text-retro-primary dark:text-dark-text">
+            Reviews
+          </h2>
+
+          {userReview && (
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-3 text-retro-secondary dark:text-dark-secondary">
+                Your Review
+              </h3>
+              <ReviewList
+                reviews={[
+                  {
+                    ...userReview,
+                    profiles: {
+                      username: "You",
+                      avatar_url: null,
+                    },
+                    game_name: game.name,
+                    game_cover: game.cover?.url,
+                  },
+                ]}
+                showGameInfo={false}
+                showUserInfo={false}
+              />
+            </div>
+          )}
+
+          <h3 className="text-xl font-semibold mb-3 text-retro-secondary dark:text-dark-secondary">
+            {reviews && reviews.length > 0
+              ? `${reviews.length} Reviews`
+              : "No Reviews Yet"}
+          </h3>
+
+          <ReviewList
+            reviews={reviews.filter(
+              (review) => !session?.user || review.user_id !== session.user.id
+            )}
+            showGameInfo={false}
+            emptyMessage={
+              userReview
+                ? "No other reviews yet. Yours is the first!"
+                : "Be the first to review this game!"
+            }
+          />
+        </div>
       </div>
     </div>
   );
