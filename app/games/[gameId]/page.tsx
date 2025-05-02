@@ -95,29 +95,28 @@ export default async function GamePage({ params }: { params: paramsType }) {
           />
         )}
         <h1 className="text-3xl font-bold mb-2">{game.name}</h1>
-        <div className="flex flex-col space-y-2 mb-4">
-          {rating && (
-            <GameRating
-              average={rating.average}
-              count={rating.count}
-              size="md"
-            />
-          )}
-          <AddToCollectionButton gameId={gameId} />
-
+        <div className="flex flex-col space-y-2 mb-4 justify-center items-center">
           {session ? (
-            <WriteReviewButton
-              gameId={gameId}
-              gameName={game.name}
-              existingReview={userReview}
-              variant="secondary"
-            />
+            <>
+              {rating && (
+                <GameRating
+                  average={rating.average}
+                  count={rating.count}
+                  size="md"
+                />
+              )}
+              <AddToCollectionButton gameId={gameId} />
+              <WriteReviewButton
+                gameId={gameId}
+                gameName={game.name}
+                existingReview={userReview}
+                variant="secondary"
+              />
+            </>
           ) : (
-            <a
-              href="/login"
-              className="flex items-center gap-2 px-4 py-2 rounded-md bg-retro-orange hover:bg-retro-orange/90 dark:bg-dark-orange dark:hover:bg-dark-orange/90 text-white transition duration-150 ease-in-out">
-              Log in to Review
-            </a>
+            <p className="text-retro-secondary dark:text-dark-secondary text-center text-lg font-semibold bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 dark:border-yellow-700 px-6 py-4 rounded-lg shadow">
+              Please sign in to add to collection and leave a review.
+            </p>
           )}
         </div>
         {game.genres && (
