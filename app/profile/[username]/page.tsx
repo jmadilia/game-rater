@@ -146,14 +146,14 @@ export default async function UserProfilePage({
           {/* Additional Info */}
           <div className="mt-6 space-y-2">
             {profile.location && (
-              <div className="flex items-center text-retro-secondary dark:text-dark-secondary">
+              <div className="flex items-center text-retro-secondary dark:text-dark-text">
                 <MapPin className="h-5 w-5 mr-2" />
                 <span>{profile.location}</span>
               </div>
             )}
 
             {profile.website && (
-              <div className="flex items-center text-retro-secondary dark:text-dark-secondary">
+              <div className="flex items-center text-retro-secondary dark:text-dark-text">
                 <Globe className="h-5 w-5 mr-2" />
                 <a
                   href={
@@ -163,27 +163,27 @@ export default async function UserProfilePage({
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-retro-primary dark:text-dark-accent hover:underline">
+                  className="text-retro-primary dark:text-dark-text hover:underline">
                   {profile.website}
                 </a>
               </div>
             )}
 
             {profile.twitter_handle && (
-              <div className="flex items-center text-retro-secondary dark:text-dark-secondary">
+              <div className="flex items-center text-retro-secondary dark:text-dark-text">
                 <Twitter className="h-5 w-5 mr-2" />
                 <a
                   href={`https://twitter.com/${profile.twitter_handle}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-retro-primary dark:text-dark-accent hover:underline">
+                  className="text-retro-primary dark:text-dark-text hover:underline">
                   @{profile.twitter_handle}
                 </a>
               </div>
             )}
 
             {profile.discord_handle && (
-              <div className="flex items-center text-retro-secondary dark:text-dark-secondary">
+              <div className="flex items-center text-retro-secondary dark:text-dark-text">
                 <FaDiscord className="h-5 w-5 mr-2" />
                 <span>{profile.discord_handle}</span>
               </div>
@@ -219,7 +219,7 @@ export default async function UserProfilePage({
                       {gameDetails[completion.game_id]?.name ||
                         `Game #${completion.game_id}`}
                     </h3>
-                    <span className="px-2 py-1 text-xs rounded-full bg-retro-accent dark:bg-dark-accent text-white">
+                    <span className="px-2 py-1 text-xs rounded-full bg-retro-accent dark:text-dark-text text-white">
                       {completion.status}
                     </span>
                   </div>
@@ -236,7 +236,7 @@ export default async function UserProfilePage({
             <div className="mt-4">
               <Link
                 href={`/profile/${username}/collection`}
-                className="text-retro-primary dark:text-dark-accent hover:underline">
+                className="text-retro-primary dark:text-dark-text hover:underline">
                 View all games
               </Link>
             </div>
@@ -295,7 +295,7 @@ export default async function UserProfilePage({
             <div className="mt-4">
               <Link
                 href={`/profile/${username}/reviews`}
-                className="text-retro-primary dark:text-dark-accent hover:underline">
+                className="text-retro-primary dark:text-dark-text hover:underline">
                 View all reviews
               </Link>
             </div>

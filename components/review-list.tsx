@@ -19,7 +19,7 @@ export default function ReviewList({
   if (reviews.length === 0) {
     return (
       <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-6 text-center">
-        <p className="text-retro-secondary dark:text-dark-secondary">
+        <p className="text-retro-secondary dark:text-dark-text">
           {emptyMessage}
         </p>
       </div>

@@ -26,7 +26,7 @@ export default async function CollectionPage() {
 
       {gameCompletions.length === 0 ? (
         <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-8 text-center">
-          <p className="text-retro-secondary dark:text-dark-secondary text-lg mb-4">
+          <p className="text-retro-secondary dark:text-dark-text text-lg mb-4">
             Your collection is empty. Start by adding some games!
           </p>
           <a

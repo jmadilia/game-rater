@@ -130,7 +130,7 @@ export default function GameCollectionList({
         {filteredGames.length === 0 ? (
           <div className="space-y-4 sm:grid sm:grid-cols-3 sm:gap-6 sm:space-y-0 w-full">
             <div className="bg-white dark:bg-dark-secondary rounded-lg shadow p-8 text-center w-full sm:col-span-3">
-              <p className="text-retro-secondary dark:text-dark-secondary">
+              <p className="text-retro-secondary dark:text-dark-text">
                 {filter === "All"
                   ? isOwner
                     ? "Your collection is empty. Start by adding some games!"
@@ -167,7 +167,7 @@ export default function GameCollectionList({
                     </h3>
                     <div className="flex flex-col w-full gap-1">
                       <div className="flex items-center space-x-2 w-full">
-                        <span className="text-sm text-retro-secondary dark:text-dark-secondary">
+                        <span className="text-sm text-retro-secondary dark:text-dark-text">
                           Added:{" "}
                           {new Date(completion.created_at).toLocaleDateString()}
                         </span>

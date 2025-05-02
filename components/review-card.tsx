@@ -74,7 +74,7 @@ export default function ReviewCard({
               />
             ))}
           </div>
-          <span className="text-xs text-retro-secondary dark:text-dark-secondary">
+          <span className="text-xs text-retro-secondary dark:text-dark-text">
             Added:{" "}
             {new Date(review.created_at).toLocaleDateString("en-US", {
               year: "numeric",
