@@ -1,13 +1,15 @@
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/placeholder/game-rater-banner.png" alt="Game Rater Banner" width="600"/>
-</p>
-
 <h1 align="center">🎮 Game Rater</h1>
 
 <p align="center">
   Discover, rate, and review your favorite video games.<br/>
   Built with Next.js, Supabase, Tailwind CSS, and shadcn/ui.
 </p>
+
+![Home Page](app/public/home-page.png)
+
+![Game Search](app/public/game-search.png)
+
+![Profile Page](app/public/profile.png)
 
 ---
 
