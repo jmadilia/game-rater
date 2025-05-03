@@ -1,6 +1,9 @@
 "use server";
 
-import { createClient } from "@/utils/supabase/server";
+import {
+  createClient,
+  createClientWithServiceRole,
+} from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { getMultipleGameDetails } from "@/lib/game/game";
 
@@ -182,14 +185,16 @@ export async function updateUserProfile(
   return { success: true };
 }
 
-// Delete a user profile
+// Delete a user profile (delete from auth.users using service role)
 export async function deleteUserProfile(): Promise<{
   success: boolean;
   error?: string;
 }> {
-  const supabase = await createClient();
+  // Use the service role key for admin operations
+  const supabaseAdmin = await createClientWithServiceRole();
 
-  // Get the current user
+  // Get the current user (using anon key, safe for auth context)
+  const supabase = await createClient();
   const {
     data: { user },
     error: authError,
@@ -202,14 +207,14 @@ export async function deleteUserProfile(): Promise<{
     };
   }
 
-  // Delete the user profile
-  const { error } = await supabase.from("profiles").delete().eq("id", user.id);
+  // Delete the user from auth.users (admin API)
+  const { error } = await supabaseAdmin.auth.admin.deleteUser(user.id);
 
   if (error) {
-    console.error("Error deleting user profile:", error);
+    console.error("Error deleting user from auth.users:", error);
     return {
       success: false,
-      error: "Failed to delete profile. Please try again.",
+      error: "Failed to delete user. Please try again.",
     };
   }
 
